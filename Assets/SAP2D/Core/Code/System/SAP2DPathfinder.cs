@@ -52,13 +52,29 @@ namespace SAP2D {
                 grid.CalculateColliders(startTile, endTile);
         }
 
+        // This definition exists to retain existing functionality
         public Vector2[] FindPath(Vector2 from, Vector2 to, SAP2DPathfindingConfig config)
+        {
+            bool PathFound;
+            return FindPathInternal(from, to, config, out PathFound);
+        }
+        // This definition exists so we can get a bool as to whether or not the path is found
+        public bool FindPath(Vector2 from, Vector2 to, SAP2DPathfindingConfig config, out Vector2[] path)
+        {
+            bool PathFound;
+            path = FindPathInternal(from, to, config, out PathFound);
+            return PathFound;
+        }
+
+        // Changed FindPath to FindPathInternal and added a bool as out to retain functionality, and to add bool functionality
+        private Vector2[] FindPathInternal(Vector2 from, Vector2 to, SAP2DPathfindingConfig config, out bool PathFound)
         {
             SAP_GridSource grid = GetGrid(config.GridIndex);
             SAP_TileData startTile = grid.GetTileDataAtWorldPosition(from);
             SAP_TileData targetTile = grid.GetTileDataAtWorldPosition(to);
             SAP_TileData currentTile = startTile;
 
+            PathFound = false;
             if (targetTile.isWalkable == false) return null;
 
             List<SAP_TileData> openList = new List<SAP_TileData>();
@@ -93,9 +109,14 @@ namespace SAP2D {
                 if (currentTile == null)
                 {
                     Debug.LogError("Path not found");
+
+                    // we return PathFound false here
+                    PathFound = false;
                     return null;
                 }
             }
+
+            PathFound = true;
             return PathRecovery(startTile, targetTile);
         }
 

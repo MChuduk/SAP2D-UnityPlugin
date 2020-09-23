@@ -98,6 +98,10 @@ namespace SAP2D {
             }
         }
 
+        // added a delegate we can subscribe to from anywhere
+        public delegate void PathIsFound(bool isFound);
+        public event PathIsFound ePathIsFound;
+
         private IEnumerator FindPath()
         { //path loop update
 
@@ -105,7 +109,14 @@ namespace SAP2D {
                 //if the object is already in the target point, the path should not be searched
                 if (grid.GetTileDataAtWorldPosition(transform.position).WorldPosition != grid.GetTileDataAtWorldPosition(Target.position).WorldPosition)
                 {
-                    path = pathfinder.FindPath(transform.position, Target.position, Config);
+                    //path = pathfinder.FindPath(transform.position, Target.position, Config);
+                    // we use the new definition for FindPath with path as out, and returning a bool whether or not the path is found.
+                    bool PathFound = pathfinder.FindPath(transform.position, Target.position, Config, out path);
+
+                    // If the Agent config says we should callback if a path was found or not
+                    if (Config.CallbackPathFound)
+                        ePathIsFound?.Invoke(PathFound);
+
                     pathIndex = 0;
                 }
             yield return new WaitForSeconds(PathUpdateRate);

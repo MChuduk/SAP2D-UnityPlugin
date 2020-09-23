@@ -9,5 +9,6 @@ namespace SAP2D
     {
         public int GridIndex;
         public bool CutCorners;
+        public bool CallbackPathFound; // whether or not we want to trigger an event if the path cannot be found
     }
 }
