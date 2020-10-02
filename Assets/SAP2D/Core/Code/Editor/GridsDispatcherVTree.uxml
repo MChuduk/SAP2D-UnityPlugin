@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="toolbar-container" style="height: 20px; background-color: rgb(255, 0, 0); margin-right: 3px; margin-left: 3px; margin-top: 3px; margin-bottom: 3px; flex-direction: row;">
+        <ui:Button text="Add Grid" name="addgrid-button" style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; width: 55px; -unity-font: url(&apos;Library/unity default resources&apos;); font-size: 10px;" />
+    </ui:VisualElement>
+</ui:UXML>
